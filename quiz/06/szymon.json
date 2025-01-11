@@ -1,0 +1,12 @@
+[
+  {
+    "question": "Ile Szymon ma lat? ",
+    "answers": [10, 17, 28, 50],
+    "right answer": "c"
+  },
+  {
+    "question": "Jaki przebieg ma Honda? ",
+    "answers": [300000, 280000, 250000, 150000],
+    "right answer": "a"
+  }
+]

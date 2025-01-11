@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "question": "Jak sprawdzić długość listy?",
+    "answers": [
+      "my_list.len()",
+      "my_list.size()",
+      "size(my_list)",
+      "len(my_list)"
+    ],
+    "right_answer": "d"
+  },
+  {
+    "id": 2,
+    "question": "Jak na podstawie int zrobić reprezentację w str?",
+    "answers": ["5.to_string()", "to_string(5)", "5.str()", "str(5)"],
+    "right_answer": "d"
+  }
+]
