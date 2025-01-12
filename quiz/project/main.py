@@ -86,5 +86,3 @@ results.append({
 
 with open('results.json', 'w') as f:
     json.dump(results, f)
-
-
