@@ -23,28 +23,6 @@ class HaveIBeenPwndValidator(Validator):
         pass
 
 
-class HasLowerCharacterValidator(Validator):
-    def __init__(self, text) -> None:
-        self.text = text
-        self.is_valid = None
-
-        self.validate(self.text)
-
-    def validate(self, text: str = None) -> bool:
-        pass
-
-
-class HasUpperCharacterValidator(Validator):
-    def __init__(self, text) -> None:
-        self.text = text
-        self.is_valid = None
-
-        self.validate(self.text)
-
-    def validate(self, text: str = None) -> bool:
-        pass
-
-
 class HasNumberValidator(Validator):
     def __init__(self, text: str) -> None:
         self.text = text
@@ -62,21 +40,33 @@ class HasSpecialCharactersValidator(Validator):
         self.text = text
 
     def validate(self) -> bool:
-        temp_list = []
-        for character in self.text:
-            temp_list.append(not character.isalnum())
-            # if not character.isalnum():
-            #     return True
         
-        print('ok')
+        return any([not character.isalnum() for character in self.text])
 
 
-class LengthValidator(Validator):
+class HasUpperCharacterValidator(Validator):
     def __init__(self, text) -> None:
         self.text = text
 
     def validate(self) -> bool:
-        pass
+        return any([character.isupper() for character in self.text])
+
+
+class HasLowerCharacterValidator(Validator):
+    def __init__(self, text) -> None:
+        self.text = text
+
+    def validate(self) -> bool:
+        return any([character.islower() for character in self.text])
+
+
+class LengthValidator(Validator):
+    def __init__(self, text, min_length: int = 8) -> None:
+        self.text = text
+        self.min_length = min_length
+
+    def validate(self) -> bool:
+        return len(self.text) >= self.min_length
 
 
 class PasswordValidator(Validator):
