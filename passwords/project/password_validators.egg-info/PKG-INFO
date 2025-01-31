@@ -1,0 +1,9 @@
+Metadata-Version: 2.2
+Name: password_validators
+Version: 0.1
+Summary: Collection of password validators
+Author: Szymurai
+Requires-Dist: requests
+Dynamic: author
+Dynamic: requires-dist
+Dynamic: summary
