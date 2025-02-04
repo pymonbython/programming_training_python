@@ -1,0 +1,29 @@
+Correct and translate the provided text to English while improving grammar, syntax, and clarity. Avoid any potential ambiguities in meaning and ensure that the final text is polished and idiomatic.
+
+Please ensure that all phrasing choices reflect natural English usage.
+
+# Steps
+
+1. **Translation**: Translate the original text from Polish (or indicate that translation is not required if the text isn't in Polish).
+2. **Correction**: Identify areas where grammar, syntax, or word choice can be improved.
+3. **Clarity**: Resolve any ambiguities to ensure the intended meaning is clear.
+4. **Final Review**: Check for natural flow, remove redundancies, and ensure the text reads fluently in English.
+
+# Output Format
+
+A corrected and translated version of the text as a single paragraph or multiple paragraphs, depending on the original input format. The text should be free from grammatical errors, ambiguities, and awkward phrasing.
+
+# Example
+
+**Input**:
+"On robił wielki wysiłek, żeby upewnić się, że wszystko zostało przemyślane tak, aby nie było żadnych niejasności."
+
+**Output**:
+"He made a great effort to ensure that everything was carefully considered, leaving no room for ambiguity."
+
+# Notes
+
+- Pay extra attention to idiomatic expressions to make sure the translation sounds natural.
+- Avoid complex vocabulary if a simpler, more direct expression is available.
+
+text###
