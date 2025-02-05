@@ -11,19 +11,20 @@ def create_connection():
     cursor = connection.cursor()
     cursor.execute('''
         CREATE TABLE lender(
-            id integer primary key autoincrement,
-            name text,
-            car_model text,
-            car_return_at date)
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            car_model TEXT,
+            car_return_at DATE,
+            email TEXT)
         ''')
     
     sample_data = [
-        (1, 'Borrower1', 'Sprinter 903', '2024-02-01'),
-        (2, 'Borrower2', 'Viano 2008', '2025-03-03')
+        (1, 'Borrower1', 'Sprinter 903', '2024-02-01', 'email@gmail.com'),
+        (2, 'Borrower2', 'Viano 2008', '2025-03-03', 'email@gmail.com')
     ]
 
     cursor.executemany('''
-        INSERT INTO lender VALUES(?, ?, ?, ?)
+        INSERT INTO lender VALUES(?, ?, ?, ?, ?)
     ''', sample_data)
 
     return connection
