@@ -1,23 +1,26 @@
 from datetime import datetime
 from string import Template
+from os import getenv
 import sqlite3
 import email
+
+from dotenv import load_dotenv
 
 from lenders import get_lenders_by_return_date
 from emails import EmailSender, Credentials
 from  db import Database
 
+load_dotenv()
 
-ssl_enable = False
-port = 2525
-smtp_server = 'sandbox.smtp.mailtrap.io'
-username = 'efd24571950570'
-password = 'da9a0378cd0db2'
-subject = 'Przypomnienie o obowiązkowym zwrocie wynajętego pojazdu.'
-sender = 'Sender <sender@gmail.com>'
-receiver_template = Template('Receiver <$lender_email>')
+CONNECTION = sqlite3.connect(getenv('DB_NAME'))
 
-CONNECTION = sqlite3.connect('database.db')
+ssl_enable = getenv('SSL_ENABLE', False)
+port = getenv('PORT')
+smtp_server = getenv('SMTP_SERVER')
+username = getenv('MAIL_USERNAME')
+password = getenv('MAIL_PASSWORD')
+subject = getenv('SUBJECT')
+sender =  getenv('SENDER')
 
 def setup(connection):
     with Database(connection) as database:
@@ -28,22 +31,16 @@ def setup(connection):
             car_return_at DATE
             email TEXT)''')
 
-today_date = datetime.today().strftime('%Y-%m-%d')
-
-lenders = get_lenders_by_return_date(CONNECTION, today_date)
-print(lenders)
-
-template = Template('''Panie $name!
+def send_reminder_to_lender(lender):
+        template = Template('''Panie $name!
                     
-Wypożyczyłeś $car_model.
-Prosimy o natychmiastowy zwrot wynajętego auta, najpóźniej do dnia $car_return_at.
+        Wypożyczyłeś $car_model.
+        Prosimy o natychmiastowy zwrot wynajętego auta, najpóźniej do dnia $car_return_at.
 
-Z poważaniem
-                    
-Agnieszka Kowalczyk z firmy Rent Four Wheels.''')
-
-with EmailSender(port, smtp_server, Credentials(username, password)) as email_sender:
-    for lender in lenders:
+        Z poważaniem
+                            
+        Agnieszka Kowalczyk z firmy Rent Four Wheels.''')
+        receiver_template = Template('Receiver <$lender_email>')
         text = template.substitute({
             'name': lender.name,
             'car_model': lender.car_model,
@@ -60,5 +57,12 @@ with EmailSender(port, smtp_server, Credentials(username, password)) as email_se
         email_sender.sendmail(sender, receiver, message)
 
         print(f'Wysyłam e-mail do {lender.email}...')
-    
-    print('Success.')
+
+if __name__ == '__main__':
+    today_date = datetime.today().strftime('%Y-%m-%d')
+    lenders = get_lenders_by_return_date(CONNECTION, today_date)
+
+    with EmailSender(port, smtp_server, Credentials(username, password)) as email_sender:
+        for lender in lenders:
+            send_reminder_to_lender(lender)
+            print('Success.')
