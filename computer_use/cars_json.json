@@ -1,0 +1,26 @@
+[
+  {
+    "consumption": 9.6,
+    "drive": {
+      "is_4x4": true,
+      "type": "permanent"
+    },
+    "manufacture": "Honda",
+    "model": "CR-V",
+    "gas": true,
+    "year": 2006,
+    "is_lift": true
+  },
+  {
+    "consumption": 4.4,
+    "drive": {
+      "is_4x4": false,
+      "type": null
+    },
+    "manufacture": "Skoda",
+    "model": "Fabia",
+    "gas": true,
+    "year": 2004,
+    "is_lift": false
+  }
+]
