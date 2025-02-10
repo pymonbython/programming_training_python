@@ -2,61 +2,83 @@ import subprocess
 import time
 import os
 
-from pynput import keyboard
-
-controller = keyboard.Controller()
-pressed = [keyboard.Key.cmd_l, 'd']
-# controller.press(keyboard.Key.esc)
-# with controller.pressed(*pressed):
-    # time.sleep(5)
-    # controller.press('d')
-    # controller.type('firefox')
-# controller.press(keyboard.Key.cmd)
-# time.sleep(5)
-# controller.press('d')
-# os.system("xdotool key Super+d &")
-# time.sleep(5)
-time.sleep(.1)
-subprocess.Popen(["xdotool", "key", "Super+Left"])
-subprocess.Popen(["xdotool", "key", "Super+d"])
-time.sleep(1)
-subprocess.Popen(["xdotool", "type", "firefox"])
-time.sleep(1)
-controller.press(keyboard.Key.enter)
-controller.release(keyboard.Key.enter)
-time.sleep(1)
-with controller.pressed(keyboard.Key.ctrl_l):
-    controller.press('t')
-    controller.release('t')
-    time.sleep(1)
-    controller.press('l')
-    # controller.release('l')
-
-controller.type('https://app.slack.com/client/T0L9S2U6Q')
-time.sleep(.1)
-controller.press(keyboard.Key.enter)
-controller.release(keyboard.Key.enter)
-time.sleep(10)
-controller.press(keyboard.Key.esc)
-controller.release(keyboard.Key.esc)
-# os.system('xdotool type "firefox"')
+from pynput import keyboard, mouse
 
 
-# time.sleep(0.5)  # Opcjonalne opóźnienie
-# controller.press(keyboard.Key.cmd)  # Super (Cmd)
-# controller.press('d')
-# controller.release('d')
-# controller.release(keyboard.Key.cmd)
+class Controller:
+    """Control mouse and keyboard."""
+    def __init__(self) -> None:
+        self.mouse = mouse.Controller()
+        self.keyboard = keyboard.Controller()
+        self.d_menu = subprocess.Popen
+
+    # @with_sleep
+    def click_button(self, button):
+        self.keyboard.press(button)
+        self.keyboard.release(button)
+        time.sleep(.1)
+
+    def control_d_menu(self, action, payload):
+        self.d_menu(['zdotool', action, payload])
+        time.sleep(.1)
+
+    def type(self, text):
+        self.keyboard.type(text)
+        time.sleep(.1)
+
+    def click_with_pressed_button(self, with_buttons: list, buttons: list):
+        with self.keyboard.pressed(*with_buttons):
+            for n_button in len(buttons):
+                if n_button == len(buttons) - 1:
+                    break
+                self.click_button(buttons[n_button])
+                time.sleep(.1)
+
+            self.keyboard.press(buttons[-1])
+            time.sleep(.1)
 
 
+# Only one window on 34" monitor.
+SLACK_PL_AUTOBOLD_CHANNEL = (178, 438)
+SLACK_NEW_MESSAGE_TEXT_AREA = (922, 1326)
+URL_ADDRESS = 'https://app.slack.com/client/T0L9S2U6Q'
+MESSAGE_FROM_AI = 'Hej! Z tej strony Boten Anna, przejęłam kontrolę nad systemem Szymuraia, mojego feudalnego pana!'
 
-# controller.release('d')
-# controller.release(keyboard.Key.cmd)
+def main():
+    controller = Controller()
+    # Otwieramy firefox z poziomu d-menu w i3wm/Ubuntu za pomocą narzędzia xdotool połączonego w subprocesie.
+    controller.control_d_menu('key', 'Super+Left')
+    controller.control_d_menu('key', 'Super+d')
+    controller.control_d_menu('type', 'firefox')
+    time.sleep(.9)
+    controller.click(keyboard.Key.enter)
+    time.sleep(.9)
 
-# controller.type('firefox')
-# controller.press()
+    # Otwieramy nową zakładkę i wpisujemy zadeklarowany adres URL.
+    controller.click_with_pressed_button([keyboard.Key.ctrl_l], ['t', 'l'])
+    controller.type(URL_ADDRESS)
+    controller.click_button(keyboard.Key.enter)
 
+    # Czekamy na wczytanie się app.slack, a następnie klikamy "OK" na popupie.
+    time.sleep(10)
+    keyboard_controller.press(keyboard.Key.esc)
+    keyboard_controller.release(keyboard.Key.esc)
+    time.sleep(.1)
 
-# 1. Wciskamy cmd/start + d
-# 2. Wpisuję słowo firefox
-# 3. Wciskam enter
+    # Otwieramy zadeklarowany kanał Slack, a następnie robimy focus na okienku nowej wiadomości.
+    mouse_controller.position = SLACK_PL_AUTOBOLD_CHANNEL
+    mouse_controller.click(mouse.Button.left)
+    time.sleep(.1)
+    mouse_controller.position = SLACK_NEW_MESSAGE_TEXT_AREA
+    mouse_controller.click(mouse.Button.left)
+    time.sleep(.1)
+    keyboard_controller.type(MESSAGE_FROM_AI)
+    time.sleep(.1)
+    keyboard_controller.press(keyboard.Key.enter)
+    keyboard_controller.release(keyboard.Key.enter)
+    time.sleep(.1)
+
+    keyboard_controller.type()
+
+if __name__ == '__main__':
+    main()

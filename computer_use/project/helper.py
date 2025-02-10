@@ -10,8 +10,8 @@ def on_press(keyCode):
 
 
 if __name__ == '__main__':
-    # with mouse.Listener(on_click=on_click) as listener:
-    #     listener.join()
-
-    with keyboard.Listener(on_press=on_press) as listener:
+    with mouse.Listener(on_click=on_click) as listener:
         listener.join()
+
+    # with keyboard.Listener(on_press=on_press) as listener:
+    #     listener.join()
